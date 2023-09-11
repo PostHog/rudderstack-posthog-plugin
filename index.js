@@ -64,7 +64,6 @@ const generic = {
 
 const autoCapture = {
     event: 'properties.$event_type',
-    'properties.elements': 'properties.$elements',
 }
 
 const eventToMapping = {
@@ -220,9 +219,9 @@ export async function setupPlugin({ config, global, jobs }) {
     global.dataPlaneUrl = config.dataPlaneUrl
 }
 
-export async function exportEvents(events, { global }) {
+export async function onEvent(event, { global }) {
     const payload = {
-        batch: events.map(constructRudderPayload),
+        ...constructRudderPayload(event),
         sentAt: new Date().toISOString(),
     }
 
@@ -234,7 +233,6 @@ export async function exportEvents(events, { global }) {
         body: JSON.stringify(payload),
         method: 'POST',
     })
-    console.log(`Successfully uploaded ${payload.batch.length} events to RudderStack`)
 }
 
 function constructRudderPayload(event) {

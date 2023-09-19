@@ -221,7 +221,7 @@ export async function setupPlugin({ config, global, jobs }) {
 
 export async function onEvent(event, { global }) {
     const payload = {
-        ...constructRudderPayload(event),
+        batch: [constructRudderPayload(event)],
         sentAt: new Date().toISOString(),
     }
 
